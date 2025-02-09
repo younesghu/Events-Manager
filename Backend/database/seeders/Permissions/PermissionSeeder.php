@@ -32,11 +32,18 @@ class PermissionSeeder extends Seeder
 
         // Assign permissions to roles
         $this->aclService->assignScopePermissionsToRole($adminRole, 'users', ['create', 'read', 'update', 'delete']);
+
+        // Create scoped permissions for events
+        $this->aclService->createScopePermissions('events', ['create', 'read', 'update', 'delete']);
+
+        // Assign permissions to admin role for events
+        $this->aclService->assignScopePermissionsToRole($adminRole, 'events', ['create', 'read', 'update', 'delete']);
     }
 
     public function rollback()
     {
         $adminRole = Role::where('name', ROLE_ENUM::ADMIN)->first();
         $this->aclService->removeScopePermissionsFromRole($adminRole, 'users', ['create', 'read', 'update', 'delete']);
+        $this->aclService->removeScopePermissionsFromRole($adminRole, 'events', ['create', 'read', 'update', 'delete']);
     }
 }

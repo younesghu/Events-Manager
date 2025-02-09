@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UploadController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,8 +76,27 @@ Route::middleware('auth:api')->group(
                 );
             }
         );
+
+
+        Route::prefix('events')->name('events.')->group(
+            function () {
+                Route::controller(EventController::class)->group(
+            function () {
+                        Route::post('/', 'createOne');
+                        Route::get('/{id}', 'readOne');
+                        Route::get('/', 'readAll');
+                        Route::put('/{id}', 'updateOne');
+                        Route::patch('/{id}', 'patchOne');
+                        Route::delete('/{id}', 'deleteOne');
+                    }
+                );
+            }
+        );
     }
 );
+
+Route::get('events', [EventController::class, 'getAll'])->name('events.readAll');
+
 
 Route::get(
     '/hello', function () {

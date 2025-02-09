@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Permissions\CrudPermissionSeeder;
-use Database\Seeders\Permissions\PermissionSeeder;
 use Illuminate\Database\Seeder;
+use Database\Seeders\EventSeeder;
 use Illuminate\Support\Facades\App;
+use Database\Seeders\Permissions\PermissionSeeder;
+use Database\Seeders\Permissions\CrudPermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             CrudPermissionSeeder::class,
             UserSeeder::class,
+            EventSeeder::class,
         ];
         if (! App::environment('prod') && ! App::environment('preprod')) {
             $seeders = array_merge($seeders, []);
