@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-import SigninView from '@/views/Authentication/SigninView.vue'
-import SignupView from '@/views/Authentication/SignupView.vue'
+import LoginView from '@/views/Authentication/LoginView.vue'
+import RegisterView from '@/views/Authentication/RegisterView.vue'
 import CalendarView from '@/views/CalendarView.vue'
 import BasicChartView from '@/views/Charts/BasicChartView.vue'
-import ECommerceView from '@/views/Dashboard/ECommerceView.vue'
 import FormElementsView from '@/views/Forms/FormElementsView.vue'
 import FormLayoutView from '@/views/Forms/FormLayoutView.vue'
 import SettingsView from '@/views/Pages/SettingsView.vue'
@@ -12,14 +12,16 @@ import ProfileView from '@/views/ProfileView.vue'
 import TablesView from '@/views/TablesView.vue'
 import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
+import HomeView from '@/views/Dashboard/HomeView.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'eCommerce',
-    component: ECommerceView,
+    name: 'home',
+    component: HomeView,
     meta: {
-      title: 'eCommerce Dashboard'
+      title: 'events Dashboard',
+      requiresAuth: true
     }
   },
   {
@@ -27,7 +29,8 @@ const routes = [
     name: 'calendar',
     component: CalendarView,
     meta: {
-      title: 'Calendar'
+      title: 'Calendar',
+      requiresAuth: true
     }
   },
   {
@@ -35,7 +38,8 @@ const routes = [
     name: 'profile',
     component: ProfileView,
     meta: {
-      title: 'Profile'
+      title: 'Profile',
+      requiresAuth: true
     }
   },
   {
@@ -95,22 +99,23 @@ const routes = [
     }
   },
   {
-    path: '/auth/signin',
-    name: 'signin',
-    component: SigninView,
+    path: '/login',
+    name: 'login',
+    component: LoginView,
     meta: {
-      title: 'Signin'
+      title: 'Login'
     }
   },
   {
-    path: '/auth/signup',
-    name: 'signup',
-    component: SignupView,
+    path: '/register',
+    name: 'register',
+    component: RegisterView,
     meta: {
-      title: 'Signup'
+      title: 'Register'
     }
   }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -121,8 +126,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
   document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
-  next()
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    // Redirect to login if the route requires auth and the user is not authenticated
+    next({ name: 'login' })
+  } else if (authStore.isAuthenticated && (to.name === 'login' || to.name === 'register')) {
+    // Redirect to home if the user is authenticated and trying to access login or register
+    next({ name: 'home' })
+  } else {
+    // Otherwise, proceed to the requested route
+    next()
+  }
 })
 
 export default router
