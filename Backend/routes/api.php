@@ -95,7 +95,7 @@ Route::middleware('auth:api')->group(
     }
 );
 
-Route::get('events', [EventController::class, 'getAll'])->name('events.readAll');
+// Route::get('events', [EventController::class, 'getAll'])->name('events.readAll');
 
 
 Route::get(

@@ -38,6 +38,7 @@ class PermissionSeeder extends Seeder
 
         // Assign permissions to admin role for events
         $this->aclService->assignScopePermissionsToRole($adminRole, 'events', ['create', 'read', 'update', 'delete']);
+        $this->aclService->assignScopePermissionsToRole($userRole, 'events', ['create', 'read', 'update', 'delete']);
     }
 
     public function rollback()
