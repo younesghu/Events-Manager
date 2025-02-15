@@ -5,8 +5,14 @@ const API_URL = 'http://127.0.0.1:8000/';
 
 class ApiService {
   // Event-related API calls
-  getAllEvents() {
-    return axios.get(API_URL + 'events');
+  async getAllEvents() {
+    const authStore = useAuthStore();
+    return await axios.get(API_URL + 'events', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token}`,
+      },
+    });
   }
 
   async getAllEventsMe() {

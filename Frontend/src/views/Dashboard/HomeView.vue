@@ -1,4 +1,4 @@
-<!-- src/views/HomeView.vue -->
+<!-- filepath: /c:/Users/hp/Desktop/Projects/Coding Tests/CyberScale/Frontend/src/views/Dashboard/HomeView.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import EventCard from '@/components/Events/EventCard.vue';
@@ -20,7 +20,7 @@ const events = ref<Event[]>([]);
 onMounted(async () => {
   try {
     const response = await EventService.getAllEvents();
-    events.value = response.data;
+    events.value = response.data.data.items; // Access the nested items array
   } catch (error) {
     console.error('Error fetching events:', error);
   }
