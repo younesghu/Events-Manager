@@ -21,7 +21,7 @@ const handleItemClick = (index: number) => {
         <router-link
           :to="childItem.route"
           @click="handleItemClick(index)"
-          class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+          class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black duration-300 ease-in-out hover:text-white"
           :class="{
             '!text-white': childItem.label === sidebarStore.selected
           }"

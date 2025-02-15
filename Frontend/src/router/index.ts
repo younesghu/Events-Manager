@@ -13,6 +13,10 @@ import TablesView from '@/views/TablesView.vue'
 import AlertsView from '@/views/UiElements/AlertsView.vue'
 import ButtonsView from '@/views/UiElements/ButtonsView.vue'
 import HomeView from '@/views/Dashboard/HomeView.vue'
+import CreateEventView from '@/views/Dashboard/CreateEventView.vue'
+import EventDetailsView from '@/views/Dashboard/EventDetailsView.vue'
+import MyEventsView from '@/views/Dashboard/MyEventsView.vue'
+import EventRequestsView from '@/views/Dashboard/EventRequestsView.vue'
 
 const routes = [
   {
@@ -25,77 +29,40 @@ const routes = [
     }
   },
   {
-    path: '/calendar',
-    name: 'calendar',
-    component: CalendarView,
+    path: '/events-me',
+    name: 'eventsMe',
+    component: MyEventsView,
     meta: {
-      title: 'Calendar',
+      title: 'events Me',
       requiresAuth: true
     }
   },
   {
-    path: '/profile',
-    name: 'profile',
-    component: ProfileView,
+    path: '/events/:id',
+    name: 'event-details',
+    component: EventDetailsView,
     meta: {
-      title: 'Profile',
+      title: 'events Details',
+      requiresAuth: true
+    },
+    props: true,
+  },
+  {
+    path: '/event-create',
+    name: 'eventCreate',
+    component: CreateEventView,
+    meta: {
+      title: 'events Create',
       requiresAuth: true
     }
   },
   {
-    path: '/forms/form-elements',
-    name: 'formElements',
-    component: FormElementsView,
+    path: '/events-requests',
+    name: 'eventRequests',
+    component: EventRequestsView,
     meta: {
-      title: 'Form Elements'
-    }
-  },
-  {
-    path: '/forms/form-layout',
-    name: 'formLayout',
-    component: FormLayoutView,
-    meta: {
-      title: 'Form Layout'
-    }
-  },
-  {
-    path: '/tables',
-    name: 'tables',
-    component: TablesView,
-    meta: {
-      title: 'Tables'
-    }
-  },
-  {
-    path: '/pages/settings',
-    name: 'settings',
-    component: SettingsView,
-    meta: {
-      title: 'Settings'
-    }
-  },
-  {
-    path: '/charts/basic-chart',
-    name: 'basicChart',
-    component: BasicChartView,
-    meta: {
-      title: 'Basic Chart'
-    }
-  },
-  {
-    path: '/ui-elements/alerts',
-    name: 'alerts',
-    component: AlertsView,
-    meta: {
-      title: 'Alerts'
-    }
-  },
-  {
-    path: '/ui-elements/buttons',
-    name: 'buttons',
-    component: ButtonsView,
-    meta: {
-      title: 'Buttons'
+      title: 'events Requests',
+      requiresAuth: true
     }
   },
   {
@@ -127,7 +94,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
+  document.title = `Vue.js ${to.meta.title} | Events Manager`
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // Redirect to login if the route requires auth and the user is not authenticated

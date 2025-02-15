@@ -35,6 +35,7 @@ export const useAuthStore = defineStore('auth', {
           this.token = data.data.token;
           this.isAuthenticated = true;
           localStorage.setItem('authToken', data.data.token);
+          await this.fetchUserDetails(); // Fetch user details after login
         } else {
           throw new Error(data.message || 'Login failed');
         }
@@ -67,6 +68,7 @@ export const useAuthStore = defineStore('auth', {
           this.token = data.data.token;
           this.isAuthenticated = true;
           localStorage.setItem('authToken', data.data.token);
+          await this.fetchUserDetails(); // Fetch user details after registration
         } else {
           throw new Error(data.message || 'Registration failed');
         }
@@ -75,9 +77,34 @@ export const useAuthStore = defineStore('auth', {
         throw error;
       }
     },
+    async fetchUserDetails() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/auth/me', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.token}`,
+          },
+        });
+
+        const text = await response.text();
+        const data = JSON.parse(text);
+        console.log(data);
+
+        if (response.ok && data.success) {
+          this.user = data.data.user;
+        } else {
+          throw new Error(data.message || 'Failed to fetch user details');
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+        throw error;
+      }
+    },
     logout() {
       this.token = null;
       this.isAuthenticated = false;
+      this.user = null;
       localStorage.removeItem('authToken');
     },
   },

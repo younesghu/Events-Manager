@@ -19,8 +19,8 @@ const events = ref<Event[]>([]);
 
 onMounted(async () => {
   try {
-    const response = await EventService.getAllEvents();
-    events.value = response.data;
+    const response = await EventService.getAllEventsMe();
+    events.value = response.data.data;
   } catch (error) {
     console.error('Error fetching events:', error);
   }
